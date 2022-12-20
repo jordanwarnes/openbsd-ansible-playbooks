@@ -1,0 +1,74 @@
+! Xterm Color Settings for Catppuccin Latte
+
+!fonts&stuff
+xterm*faceSize: 14
+xterm*eightBitInput: false
+XTerm*faceName: Victor Mono:antialias=true
+Xterm*scrollKey: true
+!Change border of Xterm
+Xterm*borderColor: #babbf1
+XTerm*internalBorder: 10
+XTerm*termName: xterm-256color
+
+!Turning off scrollbar
+XTerm*scrollBar:  off
+
+!Starting up with a geometry
+XTerm*vt100*geometry:   93x26
+
+!Colors
+!-------------------------
+
+*background: #1E1E2E
+*foreground: #CDD6F4
+
+! black
+ *color0: #45475A
+ *color8: #585B70
+!
+! ! red
+ *color1: #F38BA8
+ *color9: #F38BA8
+!
+! ! green
+ *color2: #A6E3A1
+ *color10: #A6E3A1
+!
+! ! yellow
+ *color3: #F9E2AF
+ *color11: #F9E2AF
+!
+! ! blue
+ *color4: #89B4FA
+ *color12: #89B4FA
+!
+! ! magenta
+ *color5: #F5C2E7
+ *color13: #F5C2E7
+!
+! ! cyan
+ *color6: #94E2D5
+ *color14: #94E2D5
+!
+! ! white
+ *color7: #BAC2DE
+ *color15: #A6ADC8
+
+! Xidle settings
+!
+XIdle*position : sw
+XIdle*delay    : 1
+XIdle*timeout  : 300
+
+
+! Xlock
+XLock.dpmsoff     : 1
+! plain white-on-black lock screen
+XLock.description : off
+XLock.echokeys    : off
+XLock.info        :
+XLock.background  : #1e1e2e
+XLock.foreground  : #cdd6f4
+XLock.mode        : blank
+XLock.username    : username: 
+XLock.password    : password: 

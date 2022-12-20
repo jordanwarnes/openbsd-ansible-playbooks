@@ -1,0 +1,79 @@
+- hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Disable services
+      command: rcctl disable {{ item }}
+      loop:
+        - smtpd
+        - sshd
+        - ftpd
+        - ftpproxy
+        - ftpproxy6
+        - httpd
+        - ldapd
+        - nfsd
+        - slowcgi
+        - spamd
+        - apmd
+
+    - name: Enable obsdfreqd
+      command: rcctl enable obsdfreqd
+
+    - name: Enable xenodm
+      command: rcctl enable xenodm
+
+    - name: Create cronjob for syncthing to autostart
+      ansible.builtin.cron:
+        name: syncthing autostart
+        user: "{{ lookup('env', 'DOAS_USER') }}"
+        job: "@reboot tmux new-session -d '/usr/local/bin/syncthing'"
+        state: present
+
+    - name: Symlink sysctl.conf
+      file:
+        src: '{{ playbook_dir }}/rc/sysctl.conf'
+        dest: '/etc/sysctl.conf'
+        state: link
+        force: true
+
+    - name: Symlink intel.conf xorg config
+      file:
+        src: '{{ playbook_dir }}/rc/intel.conf'
+        dest: '/usr/X11R6/share/X11/xorg.conf.d/intel.conf'
+        state: link
+        force: true
+
+    - name: Create /usr/local/lib/firefox/ folder
+      ansible.builtin.file:
+        path: /etc/firefox
+        state: directory
+
+    - name: Create /usr/local/lib/firefox/browser folder
+      ansible.builtin.file:
+        path: /usr/local/lib/firefox/browser
+        state: directory
+
+    - name: Create /usr/local/lib/firefox/browser/defaults folder
+      ansible.builtin.file:
+        path: /usr/local/lib/firefox/browser/defaults
+        state: directory
+
+    - name: Create /usr/local/lib/firefox/browser/defaults/preferences folder
+      ansible.builtin.file:
+        path: /usr/local/lib/firefox/browser/defaults/preferences
+        state: directory
+    
+    - name: Create /usr/local/lib/firefox/distribution folder
+      ansible.builtin.file:
+        path: /usr/local/lib/firefox/distribution
+        state: directory
+      
+    - name: Rsync Xsetup_0
+      synchronize:
+        src: '{{ playbook_dir }}/rc/xenodm/Xsetup_0'
+        dest: "/etc/X11/xenodm/"
+
+    - name: Rsync Xresources
+      synchronize:
+        src: '{{ playbook_dir }}/rc/xenodm/Xresources'
+        dest: "/etc/X11/xenodm/"     

@@ -1,0 +1,15 @@
+!!! date bar
+date-bar*faceName: Victor Mono:pixelsize=14
+date-bar*geometry: 16x1+2410+1040
+date-bar*internalBorder: 6
+date-bar*saveLines: 0
+date-bar*scrollBar: false
+date-bar*title: date-bar
+
+!!! desktop id bar
+desktop-id*faceName: Victor Mono:pixelsize=14
+desktop-id*geometry: 3x1+10+1040
+desktop-id*internalBorder: 6
+desktop-id*saveLines: 0
+desktop-id*scrollBar: false
+desktop-id*title: desktop-id

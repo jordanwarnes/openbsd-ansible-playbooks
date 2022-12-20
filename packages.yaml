@@ -1,0 +1,23 @@
+- hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Install packages
+      command: pkg_add {{ item }}
+      loop:
+        - vim--no_x11
+        - curl
+        - wget
+        - firefox
+        - feh
+        - git
+        - keepassxc--browser
+        - qt5ct
+        - dunst
+        - cmus
+        - ranger
+        - cmixer
+        - obsdfreqd
+        - syncthing
+        - unzip--
+        - rsync--
+        - papirus-icon-theme

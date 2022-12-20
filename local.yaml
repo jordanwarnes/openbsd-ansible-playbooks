@@ -1,0 +1,90 @@
+- hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Add line to force qt5ct theme for qt applications system wide
+      ansible.builtin.lineinfile:
+        path: /etc/environment
+        line: QT_QPA_PLATFORMTHEME=qt5ct
+        create: yes
+
+    - name: Create .local folder
+      ansible.builtin.file:
+        path: /home/{{ lookup('env', 'DOAS_USER') }}/.local
+        state: directory
+        owner: "{{ lookup('env', 'DOAS_USER') }}"
+        group: "{{ lookup('env', 'DOAS_USER') }}"
+
+    - name: Create .local/share folder
+      ansible.builtin.file:
+        path: /home/{{ lookup('env', 'DOAS_USER') }}/.local/share
+        state: directory
+        owner: "{{ lookup('env', 'DOAS_USER') }}"
+        group: "{{ lookup('env', 'DOAS_USER') }}"
+
+    - name: Create .local/bin folder
+      ansible.builtin.file:
+        path: /home/{{ lookup('env', 'DOAS_USER') }}/.local/share/bin
+        state: directory
+        owner: "{{ lookup('env', 'DOAS_USER') }}"
+        group: "{{ lookup('env', 'DOAS_USER') }}"
+
+    - name: Copy bin folder to home directory
+      synchronize:
+        src: '{{ playbook_dir }}/bin'
+        dest: "/home/{{ lookup('env', 'DOAS_USER') }}/.local/bin"
+
+    - name: Create .local/share/themes folder
+      ansible.builtin.file:
+        path: /home/{{ lookup('env', 'DOAS_USER') }}/.local//share/themes
+        state: directory
+
+    - name: Create .local/share/themes folder
+      ansible.builtin.file:
+        path: /home/{{ lookup('env', 'DOAS_USER') }}/.local/share/icons
+        state: directory
+        owner: "{{ lookup('env', 'DOAS_USER') }}"
+        group: "{{ lookup('env', 'DOAS_USER') }}"
+
+    - name: Create .local/share/fonts folder
+      ansible.builtin.file:
+        path: /home/{{ lookup('env', 'DOAS_USER') }}/.local/share/fonts
+        state: directory
+        owner: "{{ lookup('env', 'DOAS_USER') }}"
+        group: "{{ lookup('env', 'DOAS_USER') }}"
+    
+    - name: Download catppuccin mocha theme and unzip
+      ansible.builtin.unarchive:
+        src: https://github.com/catppuccin/gtk/blob/main/Releases/Catppuccin-Mocha-Lavender.zip?raw=true
+        dest: /home/{{ lookup('env', 'DOAS_USER') }}/.local/share/themes
+        remote_src: yes
+
+    - name: Download Victor Mono font and unzip
+      ansible.builtin.unarchive:
+        src: https://rubjo.github.io/victor-mono/VictorMonoAll.zip
+        dest: /home/{{ lookup('env', 'DOAS_USER') }}/.local/share/fonts
+        remote_src: yes
+ 
+    - name: Clone catppuccin-folders
+      git:
+        repo: https://github.com/catppuccin/papirus-folders.git
+        dest: /tmp/papirus-folders
+        clone: yes
+        update: yes
+
+    - name: Copy catppuccin folders patch
+      synchronize:
+        src: /tmp/papirus-folders/src/
+        dest: /usr/local/share/icons/Papirus/
+  
+    - name: Modify papirus-dark to catppuccin colour scheme
+      ansible.builtin.command: /tmp/papirus-folders/papirus-folders -C cat-mocha-lavender --theme Papirus-Dark
+
+    - name: Download Material Icon theme
+      ansible.builtin.get_url:
+        url: https://github.com/google/material-design-icons/raw/master/font/MaterialIcons-Regular.ttf
+        dest: "/home/{{ lookup('env', 'DOAS_USER') }}/.local/share/fonts/"
+
+    - name: Rsync wallpaper
+      synchronize:
+        src: '{{ playbook_dir }}/config/wallpapers/waves.png'
+        dest: "/etc/X11/xenodm/pixmaps/"

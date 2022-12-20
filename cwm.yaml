@@ -1,0 +1,33 @@
+- hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: xsession symlink
+      synchronize:
+        src: "home/.xsession"
+        dest: "/home/{{ lookup('env', 'DOAS_USER') }}/.xsession"
+
+    - name: cwm symlink
+      synchronize:
+        src: "home/.cwmrc"
+        dest: "/home/{{ lookup('env', 'DOAS_USER') }}/.cwmrc"
+
+    - name: Xdefaults symlink
+      synchronize:
+        src: "home/.Xdefaults"
+        dest: "/home/{{ lookup('env', 'DOAS_USER') }}/.Xdefaults"
+
+    - name: Xresources symlink
+      synchronize:
+        src: "home/.Xresources"
+        dest: "/home/{{ lookup('env', 'DOAS_USER') }}/.Xresources"
+
+    - name: profile symlink
+      synchronize:
+        src: "home/.profile"
+        dest: "/home/{{ lookup('env', 'DOAS_USER') }}/.profile"
+    
+    - name: kshrc symlink
+      synchronize:
+        src: "home/.kshrc"
+        dest: "/home/{{ lookup('env', 'DOAS_USER') }}/.kshrc"
+
