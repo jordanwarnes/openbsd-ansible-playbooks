@@ -31,7 +31,7 @@
     - name: Copy bin folder to home directory
       synchronize:
         src: '{{ playbook_dir }}/bin'
-        dest: "/home/{{ lookup('env', 'DOAS_USER') }}/.local/bin"
+        dest: "/home/{{ lookup('env', 'DOAS_USER') }}/.local/"
 
     - name: Create .local/share/themes folder
       ansible.builtin.file:
